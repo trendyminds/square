@@ -1,0 +1,44 @@
+{
+    "name": "trendyminds/square",
+    "description": "Integrate the Square e-commerce platform into Craft",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "square"
+    ],
+    "support": {
+        "docs": "https://github.com/trendyminds/square/blob/master/README.md",
+        "issues": "https://github.com/trendyminds/square/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "TrendyMinds",
+            "homepage": "https://trendyminds.com"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1",
+        "square/connect": "^2.20180918"
+    },
+    "autoload": {
+        "psr-4": {
+          "trendyminds\\square\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Square",
+        "handle": "square",
+        "hasCpSettings": true,
+        "hasCpSection": false,
+        "changelogUrl": "https://raw.githubusercontent.com/trendyminds/square/master/CHANGELOG.md",
+        "components": {
+            "squareService": "trendyminds\\square\\services\\SquareService"
+        },
+        "class": "trendyminds\\square\\Square"
+    }
+}

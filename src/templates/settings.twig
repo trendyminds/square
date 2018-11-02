@@ -1,0 +1,32 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Square plugin for Craft CMS 3.x
+ *
+ * Square Settings.twig
+ *
+ * @author    TrendyMinds
+ * @copyright Copyright (c) 2018 TrendyMinds
+ * @link      https://trendyminds.com
+ * @package   Square
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{{ forms.textField({
+    label: 'Location ID',
+    instructions: 'The Location ID for the Square profile to connect to.',
+    id: 'locationID',
+    name: 'locationID',
+    value: settings['locationID']})
+}}
+
+{{ forms.textField({
+    label: 'Access Token',
+    instructions: 'The Access Token of your [Square App](https://connect.squareup.com/apps). You may also use a Sandbox token here.',
+    id: 'accessToken',
+    name: 'accessToken',
+    value: settings['accessToken']})
+}}

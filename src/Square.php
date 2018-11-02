@@ -82,7 +82,7 @@ class Square extends Plugin
     public function init()
     {
         // Use require for autoloading Square SDK. Not required for most dependencies, but required for Square :(
-        require_once(__DIR__ . '/../vendor/autoload.php');
+        require_once(CRAFT_VENDOR_PATH . '/autoload.php');
 
         parent::init();
         self::$plugin = $this;

@@ -2,7 +2,7 @@
     "name": "trendyminds/square",
     "description": "Integrate the Square e-commerce platform into Craft",
     "type": "craft-plugin",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "keywords": [
         "craft",
         "cms",

@@ -1,0 +1,24 @@
+/**
+ * Square plugin for Craft CMS
+ *
+ * SquareField Field CSS
+ *
+ * @author    TrendyMinds
+ * @copyright Copyright (c) 2018 TrendyMinds
+ * @link      https://trendyminds.com
+ * @package   Square
+ * @since     1.0.0
+ */
+
+.square-table {
+  overflow: scroll;
+  max-height: 25rem;
+}
+
+.square-table tbody td:first-of-type {
+  padding-left: 0.5rem;
+}
+
+.square-table tbody tr:hover td {
+  background: #f5f5f5;
+}

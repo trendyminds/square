@@ -1,0 +1,47 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Square plugin for Craft CMS 3.x
+ *
+ * SquareField Field Input
+ *
+ * @author    TrendyMinds
+ * @copyright Copyright (c) 2018 TrendyMinds
+ * @link      https://trendyminds.com
+ * @package   Square
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+<div class="square-table">
+    <table class="data fullwidth">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>Product</th>
+                <th>Variation</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in craft.square.products %}
+                {% for variation in product.variations %}
+                    <tr>
+                        <td>
+                            {{ forms.checkboxField({
+                                name: name ~ "[]",
+                                value: variation.id,
+                                checked: variation.id in value
+                            }) }}
+                        </td>
+                        <td>{{product.title}}</td>
+                        <td>{{variation.name}}</td>
+                        <td>{{variation.price}}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -14,6 +14,7 @@ use trendyminds\square\Square;
 
 use SquareConnect\Configuration;
 use SquareConnect\ApiClient;
+use SquareConnect\Api\CatalogApi;
 use SquareConnect\Api\CheckoutApi;
 use SquareConnect\Model\CreateOrderRequestLineItem;
 use SquareConnect\Model\CreateOrderRequest;
@@ -41,7 +42,6 @@ class SquareService extends Component
     private $locationId;
     private $apiConfig;
     private $apiClient;
-    private $checkoutClient;
 
     public function __construct()
     {
@@ -52,11 +52,12 @@ class SquareService extends Component
         // Authenticate to Square
         $this->apiConfig = Configuration::getDefaultConfiguration()->setAccessToken($this->accessToken);
         $this->apiClient = new ApiClient($this->apiConfig);
-        $this->checkoutClient = new CheckoutApi($this->apiClient);
     }
 
     public function createOrderWithItems($items)
     {
+        $checkoutClient = new CheckoutApi($this->apiClient);
+
         // Create an Order object using line items from above
         $order = new CreateOrderRequest();
 
@@ -72,7 +73,7 @@ class SquareService extends Component
         $output = (object) [];
 
         try {
-            $result = $this->checkoutClient->createCheckout($this->locationId, $checkout);
+            $result = $checkoutClient->createCheckout($this->locationId, $checkout);
             $checkoutId = $result->getCheckout()->getId();
             $output = (object) [
                 "data" => $result->getCheckout()->getCheckoutPageUrl(),
@@ -101,5 +102,63 @@ class SquareService extends Component
         }
 
         return $this->createOrderWithItems($lineItems);
+    }
+
+    public function getProducts()
+    {
+        $catalogClient = new CatalogApi();
+        $result = (object) [];
+
+        try {
+            $products = [];
+            $catalogResponse = $catalogClient->listCatalog("", "ITEM");
+
+            foreach ($catalogResponse['objects'] as $key => $value) {
+                $products[$key] = [
+                    "id" => $value["id"],
+                    "title" => $value["item_data"]["name"]
+                ];
+
+                foreach ($value["item_data"]["variations"] as $variation) {
+                    $products[$key]["variations"][] = [
+                        "id" => $variation["id"],
+                        "name" => $variation["item_variation_data"]["name"],
+                        "price" => "$" . money_format('%(n', $variation["item_variation_data"]["price_money"]["amount"] / 100)
+                    ];
+                }
+            }
+
+            $result = (object) [
+                "data" => $products,
+                "status" => 200
+            ];
+        } catch (Exception $e) {
+            $result = (object) [
+                "data" => 'Exception when calling CatalogApi->listCatalog: ' . $e->getMessage(),
+                "status" => 500
+            ];
+        }
+
+        return $result;
+    }
+
+    public function getProductDetails($products = [])
+    {
+        $output = [];
+        $allProducts = $this->getProducts()->data;
+
+        foreach ($allProducts as $product) {
+            foreach ($product["variations"] as $variation) {
+                if (in_array($variation["id"], $products)) {
+                    $output[] = [
+                        "id" => $variation["id"],
+                        "name" => $variation["name"],
+                        "price" => $variation["price"]
+                    ];
+                }
+            }
+        }
+
+        return $output;
     }
 }

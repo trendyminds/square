@@ -13,12 +13,15 @@ namespace trendyminds\square;
 use trendyminds\square\services\SquareService as SquareServiceService;
 use trendyminds\square\variables\SquareVariable;
 use trendyminds\square\models\Settings;
+use trendyminds\square\fields\SquareField as SquareFieldField;
 
 use Craft;
 use craft\base\Plugin;
 use craft\services\Plugins;
 use craft\events\PluginEvent;
 use craft\web\UrlManager;
+use craft\services\Fields;
+use craft\events\RegisterComponentTypesEvent;
 use craft\web\twig\variables\CraftVariable;
 use craft\events\RegisterUrlRulesEvent;
 
@@ -92,6 +95,15 @@ class Square extends Plugin
             $variable = $event->sender;
             $variable->set('square', SquareVariable::class);
         });
+
+        // Register our fields
+        Event::on(
+            Fields::class,
+            Fields::EVENT_REGISTER_FIELD_TYPES,
+            function (RegisterComponentTypesEvent $event) {
+                $event->types[] = SquareFieldField::class;
+            }
+        );
 
 /**
  * Logging in Craft involves using one of the following methods:

@@ -123,7 +123,7 @@ class SquareService extends Component
                     $products[$key]["variations"][] = [
                         "id" => $variation["id"],
                         "name" => $variation["item_variation_data"]["name"],
-                        "price" => "$" . money_format('%(n', $variation["item_variation_data"]["price_money"]["amount"] / 100)
+                        "price" => money_format('%(n', $variation["item_variation_data"]["price_money"]["amount"] / 100)
                     ];
                 }
             }

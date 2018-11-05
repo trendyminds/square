@@ -87,6 +87,12 @@ class Square extends Plugin
         parent::init();
         self::$plugin = $this;
 
+        // Setup Variables class
+        Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
+            $variable = $event->sender;
+            $variable->set('square', SquareVariable::class);
+        });
+
 /**
  * Logging in Craft involves using one of the following methods:
  *

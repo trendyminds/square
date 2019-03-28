@@ -68,6 +68,7 @@ class SquareService extends Component
 
         $checkout = new CreateCheckoutRequest();
         $checkout->setIdempotencyKey(uniqid()); //uniqid() generates a random string.
+        $checkout->setAskForShippingAddress(true); // request shipping information
         $checkout->setOrder($order); //this is the order we created in the previous step
 
         $output = (object) [];
